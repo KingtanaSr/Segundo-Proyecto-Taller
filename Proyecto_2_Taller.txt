@@ -1,0 +1,155 @@
+
+import pygame
+# Dimensiones de la ventana y del tablero
+anchura_ventana = 600
+altura_ventana = 600
+
+
+# Colores
+blanco = (255, 255, 255)
+negro = (0, 0, 0)
+
+# Si Fil y Col son (6,6) o (8,8) o (10,10) o (20,20) o (30,30) o  (40,40) o (50,50) se ve más bonito porque queda alineado :)
+# el minimo de Fil y Col es de 5
+# el maximo de Fil y Col es de 55, si no no funciona y se ve muuuy pequeño
+
+Fil, Col, ii, jj = 8, 8, 0, 0 #se establecen las dimensiones de la matriz o tablero
+tablero_size = Fil #se estabece que el tamaño del tablero va a ser igual a Fil, o sea si Fil es 6, el tamaño del tablero seria de 6x6
+
+pygame.init() #se inicializa pygame
+
+# Crear la ventana
+ventana = pygame.display.set_mode((anchura_ventana, altura_ventana)) #se crea la ventana de pygame
+caballo_imagen = pygame.image.load('caballo.jfif') #se carga la imagen del caballo
+caballo_imagen = pygame.transform.scale(caballo_imagen, (min(anchura_ventana, altura_ventana) // tablero_size, min(anchura_ventana, altura_ventana) // tablero_size)) # se escala el tamaño de la imagen para que sea del mismo tamaño de la casilla 
+cuadro_rojo = pygame.image.load('rojo.jfif')#se carga la imagen del cuadro rojo
+cuadro_rojo = pygame.transform.scale(cuadro_rojo, (min(anchura_ventana, altura_ventana) // tablero_size, min(anchura_ventana, altura_ventana) // tablero_size)) # se escala el tamaño de la imagen para que sea del mismo tamaño de la casilla 
+
+#se crea la funcion crea la funcion para crear el dibujo del tablero
+def crear_tablero():
+    casilla_size = min(anchura_ventana, altura_ventana) // tablero_size #se establece el tamaño de las casillas tomando el minimo entre la altura y la anchura dividido entre el tamaño del tablero
+    for fil in range(tablero_size): #se itera sobre las dimensiones del tablero
+        for col in range(tablero_size):
+            x = col * casilla_size #se crea la variable x que va a ser la cantidad de columnas por el tamaño de la casilla 
+            y = fil * casilla_size #lo mismo con la variable y 
+            color = blanco if (fil + col) % 2 == 0 else negro #si la casilla esta en posicion par entonces va a ser blanca, y si esta en impar va a ser negra  
+            pygame.draw.rect(ventana, color, (x, y, casilla_size, casilla_size)) 
+
+
+def dibujar_caballo(posicion): 
+    casilla_size = min(anchura_ventana, altura_ventana) // tablero_size #se establece el tamaño de las casillas tomando el minimo entre la altura y la anchura dividido entre el tamaño del tablero
+    x = posicion[1] * casilla_size #la variable x va a ser el elemento en la posicion 1 multiplicado por el tamaño de la casilla
+    y = posicion[0] * casilla_size #la variable y va a ser el elemento en la posicion 0 multiplicado por el tamaño de la casilla
+    caballo_size = casilla_size - 10 #se establece el tamaño del caballo restando un margen de 10 pixeles a cada lado de la casilla
+    caballo = caballo_imagen.get_rect() #se obtiene un rectangulo con la imagen del caballo, y se ajusta el tamaño en base al tamaño calculado antes 
+    caballo.width = caballo_size
+    caballo.height = caballo_size
+    if Fil >= 20 and Fil <= 29: #las siguientes condiciones son para ajustar el centro de la imagen del caballo con la casilla, para que esta quede alineada con la casilla
+        caballo.center = (x + casilla_size//3 , y + casilla_size//3)
+        ventana.blit(caballo_imagen, caballo)
+    if Fil >= 5 and Fil <= 7:
+        caballo.center = (x + casilla_size//2.2 , y + casilla_size//2.2)       
+        ventana.blit(caballo_imagen, caballo)
+    if Fil >= 50  and Fil <= 55:
+        caballo.center = (x + casilla_size//7 , y + casilla_size//7)       
+        ventana.blit(caballo_imagen, caballo)
+    if Fil == 8 or Fil == 9:
+        caballo.center = (x + casilla_size//2.3 , y + casilla_size//2.3)       
+        ventana.blit(caballo_imagen, caballo)    
+    if Fil >= 10 and Fil <= 19:
+        caballo.center = (x + casilla_size//2.4 , y + casilla_size//2.4)       
+        ventana.blit(caballo_imagen, caballo)
+    if Fil >= 30 and Fil <= 39:
+        caballo.center = (x + casilla_size//3.4 , y + casilla_size//3.4)       
+        ventana.blit(caballo_imagen, caballo)
+    if Fil >= 40 and Fil <= 49:
+        caballo.center = (x + casilla_size//5.5 , y + casilla_size//5.5)       
+        ventana.blit(caballo_imagen, caballo)
+
+
+def dibujar_cas(posicion):
+    casilla_size = min(anchura_ventana, altura_ventana) // tablero_size
+    x = posicion[1] * casilla_size
+    y = posicion[0] * casilla_size
+    cuadrado_size = casilla_size - 10
+    casi = cuadro_rojo.get_rect()
+    casi.width = cuadrado_size   
+    casi.height = cuadrado_size
+    if Fil >= 20 and Fil <= 29:
+        casi.center = (x + casilla_size//3 , y + casilla_size//3)
+        ventana.blit(cuadro_rojo, casi)
+    if Fil >= 5 and Fil <= 7:
+        casi.center = (x + casilla_size//2.2 , y + casilla_size//2.2)   
+        ventana.blit(cuadro_rojo, casi)   
+    if Fil >= 50  and Fil <= 55:
+        casi.center = (x + casilla_size//7 , y + casilla_size//7)   
+        ventana.blit(cuadro_rojo, casi) 
+    if Fil == 8 or Fil == 9:
+        casi.center = (x + casilla_size//2.3 , y + casilla_size//2.3)   
+        ventana.blit(cuadro_rojo, casi) 
+    if Fil >= 10 and Fil <= 19:
+        casi.center = (x + casilla_size//2.4 , y + casilla_size//2.4)   
+        ventana.blit(cuadro_rojo, casi)
+    if Fil >= 30 and Fil <= 39:
+        casi.center = (x + casilla_size//3.4 , y + casilla_size//3.4)   
+        ventana.blit(cuadro_rojo, casi)
+    if Fil >= 40 and Fil <= 49:
+        casi.center = (x + casilla_size//5.5 , y + casilla_size//5.5)   
+        ventana.blit(cuadro_rojo, casi)
+
+import math
+def kt(Fil, Col, ii, jj):
+    pila = [[[ii, jj]]]
+    while pila != []:
+        ruta = pila.pop()
+        if len(ruta) == Fil * Col:
+            return ruta
+        for hijo in hijos(ruta):
+            pila.append(hijo)
+        
+def hijos(ruta):
+    movimientos_posibles = [[2,1], [1,2], [-1,2], [-2,1], [-2,-1], [-1,-2], [1,-2], [2,-1]]
+    ult_movi_x, ult_movi_y = ruta[-1]
+    hijos = []
+    for movi_x, movi_y in ordenar_movimientos(movimientos_posibles, ult_movi_x, ult_movi_y, Fil, Col):
+        nuevo_x, nuevo_y = ult_movi_x + movi_x, ult_movi_y + movi_y
+        if 0 <= nuevo_x < Fil and 0 <= nuevo_y < Col and [nuevo_x, nuevo_y] not in ruta:
+            hijos.append(ruta + [[nuevo_x, nuevo_y]])
+    return hijos
+
+def ordenar_movimientos(movimientos_posibles, x, y, Fil, Col):
+    movimientos_ordenados = []
+    for dir_x, dir_y in movimientos_posibles:
+        nue_x, nue_y = x + dir_x, y + dir_y
+        if 0 <= nue_x < Fil and 0 <= nue_y < Col:
+            distancia = math.pow((nue_x - Fil // 2), 2) + math.pow((nue_y - Col // 2), 2)
+            insertar_en_orden(movimientos_ordenados, (dir_x, dir_y, distancia))
+    return [(dir_x, dir_y) for dir_x, dir_y, _ in movimientos_ordenados]
+
+def insertar_en_orden(lista, elemento):
+    if lista == []:
+        lista.append(elemento)
+    else:
+        i = 0
+        while i < len(lista) and lista[i][2] < elemento[2]:
+            i += 1
+        lista.insert(i, elemento)
+
+def int_grafica():
+    solucion = kt(Fil, Col, ii, jj) #la solucion va a ser una llamada a la funcion kt que ejecuta tdo el algoritmo 
+    if solucion: #si hay una solucion valida, entonces se crea el tablero
+        crear_tablero()
+        for paso in solucion: #para cada movimiento se dibuja el caballo y se actualiza la pantalla 
+            dibujar_caballo(paso)
+            pygame.display.update()
+            dibujar_cas(paso) #para cada movimiento se dibuja tambien el cuadro rojo y no se actualiza la pantalla para que asi quede marcado el movimiento
+            pygame.time.wait(500)
+
+    pygame.quit()
+
+
+print(int_grafica())
+
+
+
+
